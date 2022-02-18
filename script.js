@@ -1,9 +1,32 @@
-function getAnswer() {
+let guessColor;
+
+function setAnswer() {
   const colors = document.querySelectorAll('.ball');
   const randomIndex = Math.floor(Math.random() * 5);
-  const answer = colors[randomIndex].style.backgroundColor;
 
-  return answer;
+  guessColor = colors[randomIndex].style.backgroundColor;
+}
+
+function showColorRGBCode() {
+  const colorParagraph = document.querySelector('#rgb-color');
+
+  colorParagraph.innerHTML = guessColor;
+}
+
+function checkRepeatedColors(colorString) {
+  const balls = document.querySelectorAll('.ball');
+
+  for (let index = 0; index < balls.length; index += 1) {
+    const element = balls[index];
+    const elementBackgroundColor = element.style.backgroundColor;
+    const isSameColor = elementBackgroundColor === colorString;
+
+    if (isSameColor) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 function generateRandomColor() {
@@ -19,47 +42,84 @@ function generateRandomColor() {
     }
   }
 
-  return colorString;
+  const color = checkRepeatedColors(colorString) ? generateRandomColor() : colorString;
+
+  return color;
 }
 
-function showColorRGBCode() {
-  const colorParagraph = document.querySelector('#rgb-color');
+function createBall() {
+  const ball = document.createElement('div');
+  ball.className = 'ball';
 
-  colorParagraph.innerHTML = answer;
+  return ball;
 }
 
-function changeBallsBackgroundColor() {
-  const colors = document.querySelectorAll('.ball');
+function changeBallsBackgroundColor(ball) {
+  const element = ball;
+  const randomColor = generateRandomColor();
 
-  for (let index = 0; index < colors.length; index += 1) {
-    const element = colors[index];
-    const randomColor = generateRandomColor();
+  element.style.backgroundColor = randomColor;
+}
 
-    element.style.backgroundColor = randomColor;
+function addBalls() {
+  const colorsContainer = document.querySelector('#colors_container');
+
+  for (let index = 0; index < 6; index += 1) {
+    const ball = createBall();
+
+    changeBallsBackgroundColor(ball);
+
+    colorsContainer.appendChild(ball);
   }
 }
 
-function giveTheResult() {
+function checkResult(element) {
+  const isTheCorrectAnwser = element.style.backgroundColor === guessColor;
+  let result = '';
+
+  if (isTheCorrectAnwser) {
+    result = 'Acertou!';
+  } else {
+    result = 'Errou! Tente novamente!';
+  }
+
+  return result;
+}
+
+function lowerAttempts(attempts) {
+  const newAttempt = attempts - 1;
+
+  return newAttempt;
+}
+
+function showResult() {
   const options = document.querySelector('#colors_container');
+  let attempts = 1;
 
   options.addEventListener('click', (event) => {
-    const element = event.target;
-    const isABall = element.className.includes('ball');
-    const answerparagraph = document.querySelector('#answer');
+    if (attempts !== 0) {
+      const element = event.target;
+      const isABall = element.className.includes('ball');
+      const answerParagraph = document.querySelector('#answer');
 
-    if (isABall) {
-      const isTheCorrectAnwser = element.style.backgroundColor === answer;
-
-      if (isTheCorrectAnwser) {
-        answerparagraph.innerHTML = 'Acertou!';
-      } else {
-        answerparagraph.innerHTML = 'Errou! Tente novamente!';
+      if (isABall) {
+        answerParagraph.innerHTML = checkResult(element);
+        attempts = lowerAttempts(attempts);
       }
     }
   });
 }
 
-changeBallsBackgroundColor();
-const answer = getAnswer();
+function resetGame() {
+  const resetButton = document.querySelector('#reset-game');
+
+  resetButton.addEventListener('click', () => {
+    window.location.reload();
+  });
+}
+
+addBalls();
+setAnswer();
 showColorRGBCode();
-giveTheResult();
+showResult();
+resetGame();
