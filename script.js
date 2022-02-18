@@ -47,7 +47,7 @@ function generateRandomColor() {
   let colorString = 'rgb(';
 
   for (let index = 0; index < 3; index += 1) {
-    const number = Math.floor(Math.random() * 255);
+    const number = Math.ceil(Math.random() * 255);
 
     if (index === 2) {
       colorString += `${number})`;
@@ -139,6 +139,12 @@ function resetResultMessage() {
   resultMessage.innerHTML = 'Escolha uma cor';
 }
 
+function resetSelectedBall() {
+  const balls = document.querySelector('.selected');
+
+  balls.classList.remove('selected');
+}
+
 function resetGame() {
   const resetButton = document.querySelector('#reset-game');
 
@@ -149,7 +155,63 @@ function resetGame() {
     setAnswer();
     showColorRGBCode();
     resetResultMessage();
+    resetSelectedBall();
     showResult();
+  });
+}
+
+function checkIfWasSelect() {
+  const balls = document.querySelector('.selected');
+
+  return balls === null;
+}
+
+function highlightBall() {
+  const options = getColorContainer();
+
+  options.addEventListener('mouseover', (event) => {
+    const isSelect = checkIfWasSelect();
+
+    if (isSelect) {
+      const element = event.target;
+      const isABall = element.className.includes('ball');
+
+      if (isABall) {
+        element.classList.add('highlight');
+      }
+    }
+  });
+}
+
+function removeHighlightBall() {
+  const options = getColorContainer();
+
+  options.addEventListener('mouseout', (event) => {
+    const element = event.target;
+    const isABall = element.className.includes('ball');
+    const isSelected = element.className.includes('selected');
+
+    if (isABall && !isSelected) {
+      element.classList.remove('highlight');
+    }
+  });
+}
+
+function selectBall() {
+  const options = getColorContainer();
+
+  options.addEventListener('click', (event) => {
+    const isSelect = checkIfWasSelect();
+
+    if (isSelect) {
+      const element = event.target;
+      const isABall = element.className.includes('ball');
+
+      if (isABall) {
+        element.classList.add('selected');
+        element.classList.toggle('highlight');
+      }
+    }
   });
 }
 
@@ -159,3 +221,6 @@ showColorRGBCode();
 showResult();
 resetGame();
 updateScore();
+highlightBall();
+removeHighlightBall();
+selectBall();
