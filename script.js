@@ -1,4 +1,18 @@
 let guessColor;
+let score = -3;
+
+function updateScore() {
+  score += 3;
+
+  const scoreText = document.querySelector('#score');
+  scoreText.innerHTML = `Placar: ${score}`;
+}
+
+function getColorContainer() {
+  const colorsContainer = document.querySelector('#colors_container');
+
+  return colorsContainer;
+}
 
 function setAnswer() {
   const colors = document.querySelectorAll('.ball');
@@ -62,14 +76,14 @@ function changeBallsBackgroundColor(ball) {
 }
 
 function addBalls() {
-  const colorsContainer = document.querySelector('#colors_container');
+  const options = getColorContainer();
 
   for (let index = 0; index < 6; index += 1) {
     const ball = createBall();
 
     changeBallsBackgroundColor(ball);
 
-    colorsContainer.appendChild(ball);
+    options.appendChild(ball);
   }
 }
 
@@ -79,6 +93,7 @@ function checkResult(element) {
 
   if (isTheCorrectAnwser) {
     result = 'Acertou!';
+    updateScore();
   } else {
     result = 'Errou! Tente novamente!';
   }
@@ -93,7 +108,7 @@ function lowerAttempts(attempts) {
 }
 
 function showResult() {
-  const options = document.querySelector('#colors_container');
+  const options = getColorContainer();
   let attempts = 1;
 
   options.addEventListener('click', (event) => {
@@ -110,13 +125,11 @@ function showResult() {
   });
 }
 
-function removeBalls(balls) {
-  const options = document.querySelector('#colors_container');
-
-  for (let index = 0; index < balls.length; index++) {
+function resetBalls(balls) {
+  for (let index = 0; index < balls.length; index += 1) {
     const element = balls[index];
 
-    options.removeChild(element);
+    changeBallsBackgroundColor(element);
   }
 }
 
@@ -132,10 +145,10 @@ function resetGame() {
   resetButton.addEventListener('click', () => {
     const balls = document.querySelectorAll('.ball');
 
-    removeBalls(balls);
-    resetResultMessage();
-    addBalls();
+    resetBalls(balls);
     setAnswer();
+    showColorRGBCode();
+    resetResultMessage();
     showResult();
   });
 }
@@ -145,3 +158,4 @@ setAnswer();
 showColorRGBCode();
 showResult();
 resetGame();
+updateScore();
