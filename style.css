@@ -1,13 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap') ;
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap') ;
 
 body {
-  font-family: Roboto;
+  font-family: sans-serif;
 }
 
 #answer {
   color: rgb(64, 61, 57);
-  font-weight: bold;
+  font-weight: 900;
   font-style: italic;
 }
 
@@ -32,7 +33,7 @@ body {
   border: 1px solid black;
   border-radius: 25px;
   font-size: 15px;
-  font-weight: bold;
+  font-weight: 900;
   padding: 15px;
 }
 
@@ -43,7 +44,7 @@ body {
 
 #rgb-color {
   color: rgb(37, 36, 34);
-  font-family: Bebas Neue;
+  font-weight: 900;
   font-size: 1.5em;
   margin: 1px;
 }
