@@ -141,7 +141,6 @@ function resetBalls(balls) {
 
     changeBallsBackgroundColor(element);
   }
-
 }
 
 function resetResultMessage() {
