@@ -100,21 +100,43 @@ function showResult() {
     if (attempts !== 0) {
       const element = event.target;
       const isABall = element.className.includes('ball');
-      const answerParagraph = document.querySelector('#answer');
+      const resultMessage = document.querySelector('#answer');
 
       if (isABall) {
-        answerParagraph.innerHTML = checkResult(element);
+        resultMessage.innerHTML = checkResult(element);
         attempts = lowerAttempts(attempts);
       }
     }
   });
 }
 
+function removeBalls(balls) {
+  const options = document.querySelector('#colors_container');
+
+  for (let index = 0; index < balls.length; index++) {
+    const element = balls[index];
+
+    options.removeChild(element);
+  }
+}
+
+function resetResultMessage() {
+  const resultMessage = document.querySelector('#answer');
+
+  resultMessage.innerHTML = 'Escolha uma cor';
+}
+
 function resetGame() {
   const resetButton = document.querySelector('#reset-game');
 
   resetButton.addEventListener('click', () => {
-    window.location.reload();
+    const balls = document.querySelectorAll('.ball');
+
+    removeBalls(balls);
+    resetResultMessage();
+    addBalls();
+    setAnswer();
+    showResult();
   });
 }
 
