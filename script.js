@@ -125,24 +125,29 @@ function showResult() {
   });
 }
 
+function resetSelectedBall() {
+  const balls = document.querySelector('.selected');
+
+  if (balls !== null) {
+    balls.classList.remove('selected');
+  }
+}
+
 function resetBalls(balls) {
+  resetSelectedBall();
+
   for (let index = 0; index < balls.length; index += 1) {
     const element = balls[index];
 
     changeBallsBackgroundColor(element);
   }
+
 }
 
 function resetResultMessage() {
   const resultMessage = document.querySelector('#answer');
 
   resultMessage.innerHTML = 'Escolha uma cor';
-}
-
-function resetSelectedBall() {
-  const balls = document.querySelector('.selected');
-
-  balls.classList.remove('selected');
 }
 
 function resetGame() {
@@ -155,7 +160,6 @@ function resetGame() {
     setAnswer();
     showColorRGBCode();
     resetResultMessage();
-    resetSelectedBall();
     showResult();
   });
 }
